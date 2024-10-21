@@ -1,0 +1,103 @@
+body {
+  background-color: #181A1B !important;
+}
+
+
+.text-center {
+	color: white !important;
+	margin: 1rem;
+}
+
+
+.img-icon{
+	margin: 1rem;
+	height: 4rem;
+	width: 5rem;
+}
+
+.button-send{
+	height: 4rem;
+	width: 10rem;
+}
+
+.input-label{
+	margin: 2rem;
+	
+}
+
+
+.navbar-dark{
+	background-color: black !important;
+}
+
+
+.navbar-toggler {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='0.5' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+
+  border-color: rgb(255,102,203);
+
+}
+
+.navbar-brand {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	font-size: 1.5rem;
+}
+
+.table {
+	margin-top: 20px;
+
+}
+	
+.container {
+	margin-bottom: 40px;
+}
+
+.botton-section {
+	margin-top: 10px;
+}
+
+.margin-text {
+	margin-bottom: 10px;
+}
+
+.form-control {
+
+	width: 62%;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+.d-flex .btn {
+	height: 47px;
+	width: 64px;
+	margin-left: 16px;
+	margin-right: 10px;
+	margin-top: 5px;
+}
+
+label {
+	color: black;
+}
+
+
+
+.h3-user{
+	margin-left: 13rem;
+	margin-right: 17rem;
+	margin-bottom: 3rem;
+}
+
+
+
+#user-details {
+	margin-top: 20px;
+	font-weight: bold;
+}
+
+.img-edit {
+	height: 2rem;
+	width: 2rem;
+}
+
+

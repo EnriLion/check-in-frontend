@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>iSmart IT Timesheet</title>
+	<link rel="stylesheet" href="css/style.css" media="all">
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<!-- Navbar -->
+	<nav class="navbar  fixed-top navbar-expand-lg navbar-dark ">
+	  <div class="container-fluid">
+	    <a class="navbar-brand text-white h1" href="#">iSmart IT</a>
+	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	      <div class="navbar-nav">
+	        <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
+	        <a class="nav-link text-white" href="index.html">Employees</a>
+	        <a class="nav-link text-white" href="register.html">Register</a>
+	      </div>
+	    </div>
+	  </div>
+	</nav><!-- Showing table -->
+<br>
+<br>
+<div class="text-center">
+<div class="d-flex justify-content-center">
+	<h2 class="text-center">Time-Sheet Employees</h2>
+	<a href="#" class="btn btn-secondary rounded-4" onclick="fetchEmployees()"><img src="img/loading.png" class="img-edit"></a>
+
+</div>
+<div class="container">
+	<table class="table table-bordered">
+		<thead class="table-dark">
+			<tr>
+				<th scope="col">Record ID</th>
+				<th scope="col">Employee ID</th>
+				<th scope="col">CheckIn</th>
+				<th scope="col">CheckOut</th>
+				<th scope="col">Status</th>
+			</tr>
+		</thead>
+		<tbody id="table_check">
+			<tr>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- Button Section for fetching users -->
+	<div class="botton-section text-center">
+		<div class="d-flex justify-content-center">
+			<h3 class="h3-user">Find employee record by ID:</h3>
+			<h3 class="h3-user">Delete employee record by ID:</h3>
+		</div>
+		<!-- Fetch user by ID section -->
+		<div class="d-flex justify-content-center">
+			<input type="text" class="form-control" id="userIdInput" placeholder="Record ID" style="max-width: 63%">
+			<a href="#" class="btn btn-secondary rounded-4" onclick="fetchUserById()"><img src="img/send.png" alt="" class="img-edit"></a>
+			<input type="text" class="form-control" id="userIdInput" placeholder="Record ID" style="max-width: 63%">
+			<a href="#" class="btn btn-secondary rounded-4" onclick="fetchUserById()"><img src="img/send.png" alt="" class="img-edit"></a>
+		</div>
+		<div class="d-flex justify-content-center">
+		</div>
+		<br><br>
+			<h3>Updating record status by ID:</h3>
+		<div class="d-flex justify-content-center">
+			<input type="text" class="form-control" id="userIdInput" placeholder="Record ID" style="max-width: 63%">
+			<a href="#" class="btn btn-secondary rounded-4" onclick="fetchUserById()"><img src="img/send.png" alt="" class="img-edit"></a>
+		</div>
+		<br>
+		<br>
+	</div>
+<script type='text/javascript' id="__bs_script__">//<![CDATA[
+    document.write("<script async src='/browser-sync/browser-sync-client.2.10.1.js'><\/script>".replace("HOST", location.hostname));
+//]]></script>
+<script src="js/check.js"></script>
+
+</body>
+</html>
