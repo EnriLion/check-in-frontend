@@ -39,23 +39,29 @@
 	<div class="botton-section text-center">
 		<div id="newForm" style="display: none">
 		<div class="container mt-5">
-			<h2>Select Employee Options</h2>
+			<h2 id="idEmployee"></h2>
 			<br>
 			<br>
 			<form id="dynamic-form">
 				<div class="form-group">
-					<select class="form-control" id="employeeSelect">
+					<select class="form-control" id="employeeSelect" onchange="showField()">
 						<option value="">Select an option</option>
-						<option value="1">Name</option>
-						<option value="2">Position</option>
-						<option value="3">Email</option>
-						<option value="3">Phone</option>
+						<option value="name">Name</option>
+						<option value="department">Department</option>
+						<option value="position">Position</option>
+						<option value="email">Email</option>
+						<option value="phone">Phone</option>
 					</select>
 				</div>
-				<div id="labelsContainer"></div>
-				<br>
-				<br>
-			<a href="#" class="btn btn-secondary rounded-4" onclick="showField()"><img src="img/send.png" alt="" class="img-edit"></a>
+		
+				<div id="inputContainer" class="form-group" style="display: none;">
+					<br>
+					<h3 color="text-white" id="inputLabel"></h2>
+					<br>
+					<input type="text" class="form-control" id="inputField" />
+					<br>
+					<a href="#" class="btn btn-secondary rounded-4" onclick="updateField()"><img src="img/send.png" alt="" class="img-edit"></a>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -68,9 +74,8 @@
 		<a href="#" class="btn btn-secondary rounded-4" onclick="searchEmployeeById()"><img src="img/send.png" alt="" class="img-edit"></a>
 	<br><br>
 	</div>
-		<!-- <button data-mdb-ripple-init type="button" class="btn btn-secondary btn-block mb-4 button-send" >Send</button> -->
     </div>
-		<!-- Fetch user by ID section -->
+	<input type="hidden" id="employeeIdHidden" value="">
 <script type='text/javascript' id="__bs_script__">//<![CDATA[
     document.write("<script async src='/browser-sync/browser-sync-client.2.10.1.js'><\/script>".replace("HOST", location.hostname));
 //]]></script>

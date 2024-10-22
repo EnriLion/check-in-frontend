@@ -1,7 +1,5 @@
 const POST_EMPLOYEE = 'https://www.boredapi.com/api/activity'
-const DELETE_EMPLOYEE= 'https://www.boredapi.com/api/activity'
 const GET_EMPLOYEE= 'http://localhost:8762/employee-service/api/v1/people/records'
-const GET_EMPLOYEE_ID= 'https://www.boredapi.com/api/activity'
 const UPDATE_EMPLOYEE= 'https://www.boredapi.com/api/activity'
 const UPDATE_POSITION= 'https://www.boredapi.com/api/activity'
 const UPDATE_EMAIL= 'https://www.boredapi.com/api/activity'
@@ -33,7 +31,6 @@ fetch(GET_EMPLOYEE).then((data)=>{
 //GET all data from employees by ID
 function findEmployeeById() {
     const employeeId = document.getElementById('userIdInput').value;
-
     if (employeeId) {
         document.getElementById("table_employee").innerHTML = '';
 
@@ -74,17 +71,20 @@ function findEmployeeById() {
 //Update function searchEmployee
 function searchEmployeeById() {
     const employeeId = document.getElementById('employeeIdInput').value;
-
+    document.getElementById("idEmployee").innerHTML = "";
     if (employeeId) {
         fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/record`)
             .then(response => response.json())
             .then(data => {
                 if (data.length > 0) {
-			alert("Employee found with this ID: " + employeeId);
-			document.getElementById('searchForm').style.display='none';
-			document.getElementById('newForm').style.display='block';
+                    alert("Employee found with this ID: " + employeeId);
+                    let data = `Select the options the Employee ID: ${employeeId}`;
+                    document.getElementById("idEmployee").innerHTML = data;
+                    document.getElementById('searchForm').style.display='none';
+                    document.getElementById('newForm').style.display='block';
+                    
                 } else {
-			alert("Employee not found with this ID: " + employeeId);
+                    alert("Employee not found with this ID: " + employeeId);
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -93,9 +93,39 @@ function searchEmployeeById() {
     }
 }
 
-//Update function showField
+//Function of show each field
 function showField(){
-	// const employeeSelect = document.getElementById('employeeSelect');
+    const employeeSelect = document.getElementById('employeeSelect');
+    const inputContainer = document.getElementById('inputContainer');
+    const inputLabel = document.getElementById('inputLabel');
+    
+    const selectedValue = employeeSelect.value;
+
+    if (selectedValue) {
+        inputContainer.style.display = 'block'; 
+
+        switch (selectedValue) {
+            case 'name':
+                inputLabel.textContent = 'New Name:';
+                break;
+            case 'department':
+                inputLabel.textContent = 'New  Department:';
+                break;
+            case 'position':
+                inputLabel.textContent = 'New  Position:';
+                break;
+            case 'email':
+                inputLabel.textContent = 'New Email:';
+                break;
+            case 'phone':
+                inputLabel.textContent = 'New Phone:';
+                break;
+            default:
+                inputContainer.style.display = 'none'; 
+        }
+    } else {
+        inputContainer.style.display = 'none'; 
+    }
 }
 
 //GET all employees
@@ -117,8 +147,7 @@ function findEmployees(){
 		</tr>
 		 `;
 	});
-	document.getElementById("table_employee").
-		innerHTML=tableData;
+	document.getElementById("table_employee").innerHTML=tableData;
 	})
 }
 
@@ -137,7 +166,7 @@ function deleteEmployeeById() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();  // If response is in JSON format
+            return response.text();  
         })
         .then(data => {
             let tableData = `
@@ -154,6 +183,140 @@ function deleteEmployeeById() {
     } else {
         alert('Please enter a valid Employee ID');
     }
+}
+
+// UPDATE employee by ID
+function updateField(){
+    const employeeId = document.getElementById('employeeIdInput').value;
+    const field = document.getElementById('inputField').value;
+    const employeeSelect = document.getElementById('employeeSelect');
+    const selectedvalue = employeeSelect.value;
+    if (employeeSelect && field) {
+        if(field){
+        switch (selectedvalue) {
+            case 'name':
+                updateName(field,employeeId);
+                break;
+            case 'department':
+                updateDepartment(field,employeeId);
+            case 'position':
+                updatePosition(field,employeeId);
+                break;
+            case 'email':
+                updateEmail(field,employeeId);
+                break;
+            case 'phone':
+                updatePhone(field,employeeId);
+                break;
+            default:
+                alert("Choose one of the fields");
+            }
+        } 
+    }
+}
+
+//Update name
+function updateName(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/name?name=${field}`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employee: " + employeeId + "is already updated with the Name: "+ field);
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error cant update employee.');
+    });
+
+}
+//Update department
+function updateDepartment(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/department?department=${field}`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employee: " + employeeId + "is already updated with the Department: "+ field);
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting employee.');
+    });
+
+}
+
+//Update position
+function updatePosition(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/position?position=${field}`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employee: " + employeeId + "is already updated with the Position "+ field);
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting employee.');
+    });
+
+}
+
+//Update email
+function updateEmail(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/email?email=${field}`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employee: " + employeeId + "is already updated with the Email: "+ field);
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting employee.');
+    });
+
+}
+
+//Update phone
+function updatePhone(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/phone?phone=${field}`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employee: " + employeeId + "is already updated with the Phone: "+ field);
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting employee.');
+    });
+
 }
 
 //
