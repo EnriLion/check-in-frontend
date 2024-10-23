@@ -1,16 +1,9 @@
-const POST_EMPLOYEE = 'https://www.boredapi.com/api/activity'
 const GET_EMPLOYEE= 'http://localhost:8762/employee-service/api/v1/people/records'
-const UPDATE_EMPLOYEE= 'https://www.boredapi.com/api/activity'
-const UPDATE_POSITION= 'https://www.boredapi.com/api/activity'
-const UPDATE_EMAIL= 'https://www.boredapi.com/api/activity'
-const UPDATE_PHONE= 'https://www.boredapi.com/api/activity'
-const UPDATE_DEPARTMENT= 'https://www.boredapi.com/api/activity'
 
 //GET all data from employees
 fetch(GET_EMPLOYEE).then((data)=>{
 	return data.json();
 }).then((objectData)=>{
-	console.log(objectData[0].id);
 	let tableData="";
 	objectData.map((values)=>{
 		tableData+=`
@@ -55,7 +48,7 @@ function findEmployeeById() {
                 } else {
                     tableData = `
                     <tr>
-                        <td colspan="6">There's not Employee ID: ${employeeId}</td>
+                        <td colspan="6" style='color: red'>There's not Employee ID: ${employeeId}</td>
                     </tr>
                     `;
                 }
@@ -119,6 +112,11 @@ function showField(){
                 break;
             case 'phone':
                 inputLabel.textContent = 'New Phone:';
+		break;
+            case 'create':
+                inputLabel.style.display = 'none';
+		inputField.style.display = 'none';
+		document.getElementById('inputField').value = "1";
                 break;
             default:
                 inputContainer.style.display = 'none'; 
@@ -178,7 +176,6 @@ function deleteEmployeeById() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error deleting employee.');
         });
     } else {
         alert('Please enter a valid Employee ID');
@@ -199,6 +196,7 @@ function updateField(){
                 break;
             case 'department':
                 updateDepartment(field,employeeId);
+		break;
             case 'position':
                 updatePosition(field,employeeId);
                 break;
@@ -207,6 +205,9 @@ function updateField(){
                 break;
             case 'phone':
                 updatePhone(field,employeeId);
+                break;
+            case 'create':
+		updateCreate(field,employeeId);
                 break;
             default:
                 alert("Choose one of the fields");
@@ -247,7 +248,7 @@ function updateDepartment(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + "is already updated with the Department: "+ field);
+            alert("The employee: " + employeeId + " is already updated with the Department: "+ field);
         })
     .catch(error => {
         console.error('Error:', error);
@@ -268,7 +269,7 @@ function updatePosition(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + "is already updated with the Position "+ field);
+            alert("The employee: " + employeeId + " is already updated with the Position "+ field);
         })
     .catch(error => {
         console.error('Error:', error);
@@ -318,6 +319,59 @@ function updatePhone(field,employeeId){
     });
 
 }
+
+//POST
+function newEmployee(){
+	const nameValue = document.getElementById('name').value;
+	const departmentValue= document.getElementById('department').value;
+	const positionValue = document.getElementById('position').value;
+	const emailValue = document.getElementById('email').value;
+	const phoneValue = document.getElementById('phone').value;
+	if(nameValue && departmentValue && positionValue && emailValue && phoneValue){
+		fetch(`http://localhost:8762/employee-service/api/v1/people?name=${nameValue}&department=${departmentValue}&position=${positionValue}&email=${emailValue}&phone=${phoneValue}`, {
+			method: 'POST'
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.text();  
+			})
+			.then(data => {
+				alert("The new employee is already created ");
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('Error cant create employee.');
+			});
+	} else {
+		alert('Complete all the fields to create a user');
+	}
+}
+
+//Update new CheckIn
+function updateCreate(field,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/new`, {
+        method: 'PUT'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.text();  
+        })
+        .then(data => {
+            alert("The employeeID: " + employeeId + " has a new CheckIn");
+            alert("Remember the employeeID: " + employeeId + " needs to be updated");
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting employee.');
+    });
+
+}
+
+//Create new CheckIn
 
 //
 //GET all data from CheckIn
