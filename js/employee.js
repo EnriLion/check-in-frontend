@@ -4,8 +4,12 @@ const GET_EMPLOYEE= 'http://localhost:8762/employee-service/api/v1/people/record
 fetch(GET_EMPLOYEE).then((data)=>{
 	return data.json();
 }).then((objectData)=>{
+	const selectShow = document.getElementById('employeeIdInput');
+	const tableShow = document.getElementById('table_employee');
 	let tableData="";
+	let selectData="";
 	objectData.map((values)=>{
+		if(tableShow){
 		tableData+=`
 			<tr>
 				<td>${values.id}</td>
@@ -16,10 +20,17 @@ fetch(GET_EMPLOYEE).then((data)=>{
 				<td>${values.phone}</td>
 			</tr>
 			`;
+			document.getElementById("table_employee").
+				innerHTML=tableData;
+		} else if (selectShow) {
+			selectData+=`
+				<option value="${values.id}">Employee ID: ${values.id} | Name: ${values.name}</option> `
+			document.getElementById("employeeIdInput").innerHTML=selectData;
+		}
 	});
-	document.getElementById("table_employee").
-		innerHTML=tableData;
 })
+
+//GET all data from select
 
 //GET all data from employees by ID
 function findEmployeeById() {
@@ -70,8 +81,7 @@ function searchEmployeeById() {
             .then(response => response.json())
             .then(data => {
                 if (data.length > 0) {
-                    alert("Employee found with this ID: " + employeeId);
-                    let data = `Select the options the Employee ID: ${employeeId}`;
+                    let data = `Select an option Employee ID: ${employeeId}`;
                     document.getElementById("idEmployee").innerHTML = data;
                     document.getElementById('searchForm').style.display='none';
                     document.getElementById('newForm').style.display='block';
@@ -169,7 +179,7 @@ function deleteEmployeeById() {
         .then(data => {
             let tableData = `
             <tr>
-                <td colspan="6">Employee with ID ${employeeId} has been deleted.</td>
+                <td colspan="6" style='color: red'>Employee with ID ${employeeId} has been deleted.</td>
             </tr>`;
             
             document.getElementById("table_employee").innerHTML = tableData;
@@ -339,6 +349,7 @@ function newEmployee(){
 			})
 			.then(data => {
 				alert("The new employee is already created ");
+				window.location.href='../index.html'
 			})
 			.catch(error => {
 				console.error('Error:', error);
