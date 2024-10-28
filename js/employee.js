@@ -226,7 +226,7 @@ function updateField(){
 	if (updatedFields.length == 0) {
 		alert('Please choose one or all of the fields to update');
 	} else {
-		window.location.hreg = 'index.html';
+		window.location.href = 'index.html';
 	}
 
 }
