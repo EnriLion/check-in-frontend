@@ -226,7 +226,7 @@ function updateField(){
 	if (updatedFields.length == 0) {
 		alert('Please choose one or all of the fields to update');
 	} else {
-		window.location.replace('http://localhost:3000/index.html');
+		window.location.hreg = 'index.html';
 	}
 
 }
@@ -354,7 +354,7 @@ function newEmployee(){
 			})
 			.then(data => {
 				alert("The new employee is already created ");
-				window.location.href='../index.html';
+				window.location.href='index.html';
 			})
 			.catch(error => {
 				console.error('Error:', error);
