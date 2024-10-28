@@ -8,6 +8,10 @@ body {
 	margin: 1rem;
 }
 
+.form-down .form-select{
+	z-index: 10 !important;
+}
+
 
 .img-icon{
 	margin: 1rem;
