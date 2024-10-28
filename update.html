@@ -42,25 +42,62 @@
 			<br>
 			<br>
 			<form id="dynamic-form">
-				<div class="form-group">
-					<select class="form-control" id="employeeSelect" onchange="showField()">
-						<option value="">Select an option</option>
-						<option value="name">Name</option>
-						<option value="department">Department</option>
-						<option value="position">Position</option>
-						<option value="email">Email</option>
-						<option value="phone">Phone</option>
-						<option value="create">Create new CheckIn</option>
-					</select>
+				<div class="row">
+					<div class="col-12 col-md-6 mb-4">
+						<div class="form-floating">
+							<input type="text" id="inputName" class="form-control" placeholder="Name"/>
+							<label class="form-label" for="floatingInput">Name</label>
+							<h6 id="idName"></h6>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4">
+						<div class="form-floating">
+							<select id="inputDepartment" name="Department" class="form-select">
+								<option value="Production">Production</option>
+								<option value="Software Development">Software Development</option>
+								<option value="Quality Assurance">Quality Assurance</option>
+								<option value="Production Management">Product Management</option>
+								<option value="UX/UI Design">UX/UI Design</option>
+								<option value="HR Department">HR Department</option>
+							</select>
+							<label for="floaringInput">Department</label>
+							<h6 id="idDepartment"></h6>
+						</div>
+					</div>
 				</div>
-		
-				<div id="inputContainer" class="form-group" style="display: none;">
-					<br>
-					<h3 color="text-white" id="inputLabel"></h2>
-					<br>
-					<input type="text" class="form-control" id="inputField" />
-					<br>
-					<a href="#" class="btn btn-secondary rounded-4" onclick="updateField()"><img src="img/send.png" alt="" class="img-edit"></a>
+				<div class="row">
+					<div class="col-12 col-md-6 mb-4">
+						<div class="form-floating">
+							<input type="text" id="inputEmail" class="form-control" placeholder="Email"/>
+							<label class="form-label" for="floatingInput">Email</label>
+							<h6 id="idEmail"></h6>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4">
+						<div class="form-floating">
+							<select id="inputPosition" name="Position" class="form-select">
+								<option value="Frontend Developer">Frontend Developer</option>
+								<option value="Backend Developer">Backend Developer</option>
+								<option value="QA">QA</option>
+								<option value="Project Manager">Project Manager</option>
+								<option value="Product Owner">Product Owner</option>
+								<option value="UX/UI Designer">UX/UI Designer</option>
+								<option value="HR Coordinator">HR Coordinator</option>
+							</select>
+							<label for="floatingInput">Position</label>
+							<h6 id="idPosition"></h6>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4">
+						<div class="form-floating">
+							<input type="text" id="inputPhone" class="form-control" placeholder="Phone" id="inputField"/>
+							<label class="form-label" for="floatingInput">Phone</label>
+							<h6 id="idPhone"></h6>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4" style="padding: 1rem">
+						<a href="#" class="btn btn-secondary rounded-4 center" onclick="updateField()"><img src="img/send.png" alt="" class="img-edit" ></a>
+					</div>
 				</div>
 			</form>
 		</div>
