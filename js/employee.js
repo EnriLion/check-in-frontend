@@ -80,11 +80,28 @@ function searchEmployeeById() {
         fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/record`)
             .then(response => response.json())
             .then(data => {
+		let  name = '';
+		let  department= '';
+		let  email = '';
+		let  position= '';
+		let  phone = '';
                 if (data.length > 0) {
-                    let data = `Select an option Employee ID: ${employeeId}`;
-                    document.getElementById("idEmployee").innerHTML = data;
-                    document.getElementById('searchForm').style.display='none';
-                    document.getElementById('newForm').style.display='block';
+			data.forEach(employee => {
+				let data = `Select an option for Employee ID: ${employeeId}`;
+				document.getElementById("idEmployee").innerHTML = data;
+				document.getElementById('searchForm').style.display='none';
+				document.getElementById('newForm').style.display='block';
+				name +=`Previous name: ${employee.name}`;
+				document.getElementById("idName").innerHTML = name;
+				department += `Previous department: ${employee.department}`;
+				document.getElementById("idDepartment").innerHTML = department;
+				position += `Previous position: ${employee.position}`;
+				document.getElementById("idPosition").innerHTML = position;
+				email +=`Previous email: ${employee.email}`;
+				document.getElementById("idEmail").innerHTML = email;
+				phone += `Previous phone: ${employee.phone}`;
+				document.getElementById("idPhone").innerHTML = phone;
+			});
                     
                 } else {
                     alert("Employee not found with this ID: " + employeeId);
@@ -97,44 +114,44 @@ function searchEmployeeById() {
 }
 
 //Function of show each field
-function showField(){
-    const employeeSelect = document.getElementById('employeeSelect');
-    const inputContainer = document.getElementById('inputContainer');
-    const inputLabel = document.getElementById('inputLabel');
+// function showField(){
+//     const employeeSelect = document.getElementById('employeeSelect');
+//     const inputContainer = document.getElementById('inputContainer');
+//     const inputLabel = document.getElementById('inputLabel');
     
-    const selectedValue = employeeSelect.value;
+//     const selectedValue = employeeSelect.value;
 
-    if (selectedValue) {
-        inputContainer.style.display = 'block'; 
+//     if (selectedValue) {
+//         inputContainer.style.display = 'block'; 
 
-        switch (selectedValue) {
-            case 'name':
-                inputLabel.textContent = 'New Name:';
-                break;
-            case 'department':
-                inputLabel.textContent = 'New  Department:';
-                break;
-            case 'position':
-                inputLabel.textContent = 'New  Position:';
-                break;
-            case 'email':
-                inputLabel.textContent = 'New Email:';
-                break;
-            case 'phone':
-                inputLabel.textContent = 'New Phone:';
-		break;
-            case 'create':
-                inputLabel.style.display = 'none';
-		inputField.style.display = 'none';
-		document.getElementById('inputField').value = "1";
-                break;
-            default:
-                inputContainer.style.display = 'none'; 
-        }
-    } else {
-        inputContainer.style.display = 'none'; 
-    }
-}
+//         switch (selectedValue) {
+//             case 'name':
+//                 inputLabel.textContent = 'New Name:';
+//                 break;
+//             case 'department':
+//                 inputLabel.textContent = 'New  Department:';
+//                 break;
+//             case 'position':
+//                 inputLabel.textContent = 'New  Position:';
+//                 break;
+//             case 'email':
+//                 inputLabel.textContent = 'New Email:';
+//                 break;
+//             case 'phone':
+//                 inputLabel.textContent = 'New Phone:';
+// 		break;
+//             case 'create':
+//                 inputLabel.style.display = 'none';
+// 		inputField.style.display = 'none';
+// 		document.getElementById('inputField').value = "1";
+//                 break;
+//             default:
+//                 inputContainer.style.display = 'none'; 
+//         }
+//     } else {
+//         inputContainer.style.display = 'none'; 
+//     }
+// }
 
 //GET all employees
 function findEmployees(){
@@ -194,36 +211,24 @@ function deleteEmployeeById() {
 
 // UPDATE employee by ID
 function updateField(){
-    const employeeId = document.getElementById('employeeIdInput').value;
-    const field = document.getElementById('inputField').value;
-    const employeeSelect = document.getElementById('employeeSelect');
-    const selectedvalue = employeeSelect.value;
-    if (employeeSelect && field) {
-        if(field){
-        switch (selectedvalue) {
-            case 'name':
-                updateName(field,employeeId);
-                break;
-            case 'department':
-                updateDepartment(field,employeeId);
-		break;
-            case 'position':
-                updatePosition(field,employeeId);
-                break;
-            case 'email':
-                updateEmail(field,employeeId);
-                break;
-            case 'phone':
-                updatePhone(field,employeeId);
-                break;
-            case 'create':
-		updateCreate(field,employeeId);
-                break;
-            default:
-                alert("Choose one of the fields");
-            }
-        } 
-    }
+	const employeeId = document.getElementById('employeeIdInput').value;
+	const fields = [
+		{ value: document.getElementById('inputName').value, updateFunc: updateName },
+		{ value: document.getElementById('inputDepartment').value, updateFunc: updateDepartment, default: 'default' },
+		{ value: document.getElementById('inputPosition').value, updateFunc: updatePosition, default: 'default' },
+		{ value: document.getElementById('inputEmail').value, updateFunc: updateEmail },
+		{ value: document.getElementById('inputPhone').value, updateFunc: updatePhone }
+	];
+	const updatedFields = fields.filter(({ value, default: def }) => value && value !== def);
+
+	updatedFields.forEach(({ value, updateFunc }) => updateFunc(value, employeeId));
+
+	if (updatedFields.length == 0) {
+		alert('Please choose one or all of the fields to update');
+	} else {
+		window.location.replace('http://localhost:3000/index.html');
+	}
+
 }
 
 //Update name
@@ -349,7 +354,7 @@ function newEmployee(){
 			})
 			.then(data => {
 				alert("The new employee is already created ");
-				window.location.href='../index.html'
+				window.location.href='../index.html';
 			})
 			.catch(error => {
 				console.error('Error:', error);
