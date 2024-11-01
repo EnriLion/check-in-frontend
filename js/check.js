@@ -1,19 +1,34 @@
 
 const GET_CHECK = 'http://localhost:8762/checks/api/v1/check/records'
 
+//functionStatus
+function funcStatus(values){
+	switch(values.status){
+		case true:
+			values.status = "../img/good.png";
+			break;
+		case false:
+			values.status = "../img/bad.png";
+			values.checkOutTime = "";
+			break;
+	}
+
+}
+
 //GET all data from employees
 fetch(GET_CHECK).then((data)=>{
 	return data.json();
 }).then((objectData)=>{
 	let tableData="";
 	objectData.map((values)=>{
+		funcStatus(values);
 		tableData+=`
 			<tr>
 				<td>${values.checkInId}</td>
 				<td>${values.employee}</td>
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
-				<td>${values.status}</td>
+				<td><img src="${values.status}" height="42" width="42"/></td>
 			</tr>
 			`;
 	});
@@ -28,13 +43,14 @@ fetch(GET_CHECK).then((data)=>{
 }).then((objectData)=>{
 	let tableData="";
 	objectData.map((values)=>{
+		funcStatus(values);
 		tableData+=`
 			<tr>
 				<td>${values.checkInId}</td>
 				<td>${values.employee}</td>
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
-				<td>${values.status}</td>
+				<td><img src="${values.status}" height="42" width="42"/></td>
 			</tr>
 			`;
 	});
@@ -43,6 +59,7 @@ fetch(GET_CHECK).then((data)=>{
 })
 
 }
+
 
 //FindRecord
 function findRecordId() {
@@ -54,16 +71,16 @@ function findRecordId() {
             .then(response => response.json())
             .then(data => {
                 let tableData = ''; 
-
                 if (data.length > 0) {
-                    data.forEach(check => {
+                    data.forEach(values => {
+			funcStatus(values);
                         tableData += `
 			<tr>
-				<td>${check.checkInId}</td>
-				<td>${check.employee}</td>
-				<td>${check.checkInTime}</td>
-				<td>${check.checkOutTime}</td>
-				<td>${check.status}</td>
+				<td>${values.checkInId}</td>
+				<td>${values.employee}</td>
+				<td>${values.checkInTime}</td>
+				<td>${values.checkOutTime}</td>
+				<td><img src="${values.status}" height="42" width="42"/></td>
 			</tr>
                         `;
                     });
@@ -123,13 +140,19 @@ function updateRecordId(){
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
-				return response.text();  
+				return response.json();  
 			})
-			.then(data => {
+			.then(values => {
+			funcStatus(values);
 			let tableData = `
 			<tr>
-			<td colspan="6" style='color: green'> Record ID ${recordId} has been updated with the new status and the new Checkout.</td>
-			</tr>`;
+				<td>${values.checkInId}</td>
+				<td>${values.employee}</td>
+				<td>${values.checkInTime}</td>
+				<td>${values.checkOutTime}</td>
+				<td><img src="${values.status}" height="42" width="42"/></td>
+			</tr>
+			`;
 				document.getElementById("table_check").innerHTML = tableData;
 			})
 			.catch(error => {

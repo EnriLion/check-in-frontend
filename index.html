@@ -39,7 +39,7 @@
 	<table class="table table-bordered">
 		<thead class="table-dark">
 			<tr>
-				<th scope="col">#</th>
+				<th scope="col">Employee ID</th>
 				<th scope="col">Name</th>
 				<th scope="col">Department</th>
 				<th scope="col">Position</th>
@@ -56,8 +56,8 @@
 <!-- Button Section for fetching users -->
 	<div class="botton-section text-center">
 		<div class="d-flex justify-content-center">
-			<h3 class ="h3-user">Find user by ID:</h3>
-			<h3 class="h3-user">Delete user by ID:</h3>
+			<h3 class ="h3-user">Find employee by ID:</h3>
+			<h3 class="h3-user">Delete employee by ID:</h3>
 		</div>
 		<!-- Fetch user by ID section -->
 		<div class="d-flex justify-content-center">
@@ -69,6 +69,14 @@
 		<br><br>
 		<div class="d-flex justify-content-center">
 		</div>
+		  <h3>Create a Record Status by ID:</h3>
+		  <br>
+		  	<div class="d-flex justify-content-center">
+				<input type="text" class="form-control" id="updateIdRecord" placeholder="Employee ID" style="max-width: 63%">
+				<a href="#" class="btn btn-secondary rounded-4" onclick="updateCreate()"><img src="img/send.png" alt="" class="img-edit"></a>
+			</div>
+		<br>
+		<br>
 	</div>
 <script type='text/javascript' id="__bs_script__">//<![CDATA[
     document.write("<script async src='/browser-sync/browser-sync-client.2.10.1.js'><\/script>".replace("HOST", location.hostname));
