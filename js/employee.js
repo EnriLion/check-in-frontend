@@ -113,46 +113,6 @@ function searchEmployeeById() {
     }
 }
 
-//Function of show each field
-// function showField(){
-//     const employeeSelect = document.getElementById('employeeSelect');
-//     const inputContainer = document.getElementById('inputContainer');
-//     const inputLabel = document.getElementById('inputLabel');
-    
-//     const selectedValue = employeeSelect.value;
-
-//     if (selectedValue) {
-//         inputContainer.style.display = 'block'; 
-
-//         switch (selectedValue) {
-//             case 'name':
-//                 inputLabel.textContent = 'New Name:';
-//                 break;
-//             case 'department':
-//                 inputLabel.textContent = 'New  Department:';
-//                 break;
-//             case 'position':
-//                 inputLabel.textContent = 'New  Position:';
-//                 break;
-//             case 'email':
-//                 inputLabel.textContent = 'New Email:';
-//                 break;
-//             case 'phone':
-//                 inputLabel.textContent = 'New Phone:';
-// 		break;
-//             case 'create':
-//                 inputLabel.style.display = 'none';
-// 		inputField.style.display = 'none';
-// 		document.getElementById('inputField').value = "1";
-//                 break;
-//             default:
-//                 inputContainer.style.display = 'none'; 
-//         }
-//     } else {
-//         inputContainer.style.display = 'none'; 
-//     }
-// }
-
 //GET all employees
 function findEmployees(){
 	fetch(GET_EMPLOYEE).then((data)=>{
@@ -191,7 +151,7 @@ function deleteEmployeeById() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.text();  
+            return response.json();  
         })
         .then(data => {
             let tableData = `
@@ -202,7 +162,12 @@ function deleteEmployeeById() {
             document.getElementById("table_employee").innerHTML = tableData;
         })
         .catch(error => {
-            console.error('Error:', error);
+            let tableData = `
+            <tr>
+                <td colspan="6" style='color: red'>There's not Employee ID ${employeeId} </td>
+            </tr>`;
+            
+            document.getElementById("table_employee").innerHTML = tableData;
         });
     } else {
         alert('Please enter a valid Employee ID');
@@ -366,8 +331,9 @@ function newEmployee(){
 }
 
 //Update new CheckIn
-function updateCreate(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/new`, {
+function updateCreate(){
+    const updateIdRecord = document.getElementById('updateIdRecord').value;
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${updateIdRecord}/new`, {
         method: 'PUT'
     })
     .then(response => {
@@ -377,8 +343,10 @@ function updateCreate(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employeeID: " + employeeId + " has a new CheckIn");
-            alert("Remember the employeeID: " + employeeId + " needs to be updated");
+            alert("The employeeID: " + updateIdRecord + " has a new CheckIn");
+            alert("Remember the employeeID: " + updateIdRecord + " needs to be updated");
+	    window.location.href = 'time-sheet.html';
+
         })
     .catch(error => {
         console.error('Error:', error);
@@ -386,23 +354,4 @@ function updateCreate(field,employeeId){
     });
 
 }
-
-//Create new CheckIn
-
-//
-//GET all data from CheckIn
-//
-//POST
-// fetch(POST_EMPLOYEE)
-// 	.then(res => res.json())
-// 	.then(data => console.log(data))
-// 	.then(err => console.log(err))
-
-// fetch().then --> Post
-// fetch().then --> Update
-// fetch().then --> Update/Field...
-// fetch().then --> Update/Field...
-// fetch().then --> Update/Field...
-// fetch().then --> Update/Field...
-// fetch().then --> Delete
 
