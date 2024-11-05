@@ -5,10 +5,10 @@ const GET_CHECK = 'http://localhost:8762/checks/api/v1/check/records'
 function funcStatus(values){
 	switch(values.status){
 		case true:
-			values.status = "../img/good.png";
+			values.status = "./img/good.png";
 			break;
 		case false:
-			values.status = "../img/bad.png";
+			values.status = "./img/bad.png";
 			values.checkOutTime = "";
 			break;
 	}
