@@ -1,6 +1,12 @@
 
 const GET_CHECK = 'http://localhost:8762/checks/api/v1/check/records'
 
+//functionButtonCancel
+function funcRemove(values){
+	let recordId = values;
+	deleteRecordId(recordId);
+}
+
 //functionStatus
 function funcStatus(values){
 	switch(values.status){
@@ -29,6 +35,7 @@ fetch(GET_CHECK).then((data)=>{
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a> </td>
 			</tr>
 			`;
 	});
@@ -51,6 +58,7 @@ fetch(GET_CHECK).then((data)=>{
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a> </td>
 			</tr>
 			`;
 	});
@@ -81,6 +89,7 @@ function findRecordId() {
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a> </td>
 			</tr>
                         `;
                     });
@@ -101,7 +110,12 @@ function findRecordId() {
 }
 //DeleteRecord
 function deleteRecordId(){
-	const recordId = document.getElementById('deleteIdInput').value;
+	let recordId;
+	if (arguments.length === 1){
+		recordId = arguments[0];
+	} else {
+		recordId = document.getElementById('deleteIdInput').value;
+	}
 	if (recordId) {
 		document.getElementById("table_check").innerHTML = '';
 		fetch(`http://localhost:8762/checks/api/v1/check/${recordId}/delete`, {
@@ -111,18 +125,27 @@ function deleteRecordId(){
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
-				return response.text();  
+				const contentType = response.headers.get("content-type");
+				if(contentType &&  contentType.includes("application/json")){
+					return response.json();  
+				}
+				return {};
 			})
 			.then(data => {
 			let tableData = `
 			<tr>
-			<td colspan="6" style='color: red'> Record ID ${recordId} has been deleted.</td>
+			    <td colspan="6" style='color: red'> Record ID ${recordId} has been deleted.</td>
 			</tr>`;
 				document.getElementById("table_check").innerHTML = tableData;
 			})
 			.catch(error => {
-				console.error('Error:', error);
-			});
+			let tableData = `
+			<tr>
+			   <td colspan="6" style='color: red'>There's not Record ID ${recordId} </td>
+                        </tr>`;
+			console.log(error);
+			document.getElementById("table_employee").innerHTML = tableData;
+		});
 	} else {
 		alert('Please enter a valid Record ID');
 	}
@@ -151,6 +174,7 @@ function updateRecordId(){
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a> </td>
 			</tr>
 			`;
 				document.getElementById("table_check").innerHTML = tableData;

@@ -1,5 +1,11 @@
 const GET_EMPLOYEE= 'http://localhost:8762/employee-service/api/v1/people/records'
 
+//functionButtonCancel
+function funcRemove(values){
+	let employeeId = values;
+	deleteEmployeeById(employeeId);
+}
+
 //GET all data from employees
 fetch(GET_EMPLOYEE).then((data)=>{
 	return data.json();
@@ -18,6 +24,7 @@ fetch(GET_EMPLOYEE).then((data)=>{
 				<td>${values.position}</td>
 				<td>${values.email}</td>
 				<td>${values.phone}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})"><img class="img-icon" src="img/cancel.png"</a></td>
 			</tr>
 			`;
 			document.getElementById("table_employee").
@@ -53,6 +60,7 @@ function findEmployeeById() {
                             <td>${employee.position}</td>
                             <td>${employee.email}</td>
                             <td>${employee.phone}</td>
+			    <td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${employee.id})"><img class="img-icon" src="img/cancel.png"</a></td>
                         </tr>
                         `;
                     });
@@ -91,15 +99,15 @@ function searchEmployeeById() {
 				document.getElementById("idEmployee").innerHTML = data;
 				document.getElementById('searchForm').style.display='none';
 				document.getElementById('newForm').style.display='block';
-				name +=`Previous name: ${employee.name}`;
+				name =`${employee.name}`;
 				document.getElementById("idName").innerHTML = name;
-				department += `Previous department: ${employee.department}`;
+				department = `${employee.department}`;
 				document.getElementById("idDepartment").innerHTML = department;
-				position += `Previous position: ${employee.position}`;
+				position = `${employee.position}`;
 				document.getElementById("idPosition").innerHTML = position;
-				email +=`Previous email: ${employee.email}`;
+				email =`${employee.email}`;
 				document.getElementById("idEmail").innerHTML = email;
-				phone += `Previous phone: ${employee.phone}`;
+				phone = `${employee.phone}`;
 				document.getElementById("idPhone").innerHTML = phone;
 			});
                     
@@ -118,7 +126,6 @@ function findEmployees(){
 	fetch(GET_EMPLOYEE).then((data)=>{
 		return data.json();
 	}).then((objectData)=>{
-		console.log(objectData[0].id);
 		let tableData="";
 		objectData.map((values)=>{
 		tableData+=`
@@ -129,6 +136,7 @@ function findEmployees(){
 		   <td>${values.position}</td>
 		   <td>${values.email}</td>
 	           <td>${values.phone}</td>
+		   <td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})"><img class="img-icon" src="img/cancel.png"</a></td>
 		</tr>
 		 `;
 	});
@@ -136,9 +144,15 @@ function findEmployees(){
 	})
 }
 
+
 //DELETE User by ID
 function deleteEmployeeById() {
-    const employeeId = document.getElementById('userIdDelete').value;
+     let employeeId;
+     if(arguments.length === 1){
+	employeeId  = arguments[0];
+     } else {
+	employeeId  = document.getElementById('userIdDelete').value;
+     }
     
     if (employeeId) {
         // Clear the table data
@@ -149,9 +163,13 @@ function deleteEmployeeById() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok ${response}');
             }
-            return response.json();  
+	    const contentType = response.headers.get("content-type");
+            if(contentType && contentType.includes("application/json")){
+		    return response.json();
+	    }
+	    return {};	
         })
         .then(data => {
             let tableData = `
@@ -166,7 +184,7 @@ function deleteEmployeeById() {
             <tr>
                 <td colspan="6" style='color: red'>There's not Employee ID ${employeeId} </td>
             </tr>`;
-            
+	    console.log(error);
             document.getElementById("table_employee").innerHTML = tableData;
         });
     } else {
@@ -175,30 +193,21 @@ function deleteEmployeeById() {
 }
 
 // UPDATE employee by ID
-function updateField(){
-	const employeeId = document.getElementById('employeeIdInput').value;
-	const fields = [
-		{ value: document.getElementById('inputName').value, updateFunc: updateName },
-		{ value: document.getElementById('inputDepartment').value, updateFunc: updateDepartment, default: 'default' },
-		{ value: document.getElementById('inputPosition').value, updateFunc: updatePosition, default: 'default' },
-		{ value: document.getElementById('inputEmail').value, updateFunc: updateEmail },
-		{ value: document.getElementById('inputPhone').value, updateFunc: updatePhone }
-	];
-	const updatedFields = fields.filter(({ value, default: def }) => value && value !== def);
+function updateField() {
 
-	updatedFields.forEach(({ value, updateFunc }) => updateFunc(value, employeeId));
-
-	if (updatedFields.length == 0) {
-		alert('Please choose one or all of the fields to update');
-	} else {
-		window.location.href = 'index.html';
-	}
+    // Get values of each input field
+    const name = document.getElementById('inputName').value;
+    const department = document.getElementById('inputDepartment').value;
+    const position = document.getElementById('inputPosition').value;
+    const email = document.getElementById('inputEmail').value;
+    const phone = document.getElementById('inputPhone').value;
 
 }
 
+
 //Update name
-function updateName(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/name?name=${field}`, {
+function updateName(name,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/name?name=${name}`, {
         method: 'PUT'
     })
     .then(response => {
@@ -208,17 +217,16 @@ function updateName(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + "is already updated with the Name: "+ field);
+            alert("The employee: " + employeeId + "is already updated with the Name: "+ name);
         })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error cant update employee.');
     });
 
 }
 //Update department
-function updateDepartment(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/department?department=${field}`, {
+function updateDepartment(department,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/department?department=${department}`, {
         method: 'PUT'
     })
     .then(response => {
@@ -228,18 +236,17 @@ function updateDepartment(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + " is already updated with the Department: "+ field);
+            alert("The employee: " + employeeId + " is already updated with the Department: "+ department);
         })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting employee.');
     });
 
 }
 
 //Update position
-function updatePosition(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/position?position=${field}`, {
+function updatePosition(position,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/position?position=${position}`, {
         method: 'PUT'
     })
     .then(response => {
@@ -249,18 +256,17 @@ function updatePosition(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + " is already updated with the Position "+ field);
+            alert("The employee: " + employeeId + " is already updated with the Position "+ position);
         })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting employee.');
     });
 
 }
 
 //Update email
-function updateEmail(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/email?email=${field}`, {
+function updateEmail(email,employeeId){
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/email?email=${email}`, {
         method: 'PUT'
     })
     .then(response => {
@@ -270,18 +276,17 @@ function updateEmail(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + "is already updated with the Email: "+ field);
+            alert("The employee: " + employeeId + "is already updated with the Email: "+ email);
         })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting employee.');
     });
 
 }
 
 //Update phone
 function updatePhone(field,employeeId){
-    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/phone?phone=${field}`, {
+    fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/phone?phone=${phone}`, {
         method: 'PUT'
     })
     .then(response => {
@@ -291,11 +296,10 @@ function updatePhone(field,employeeId){
             return response.text();  
         })
         .then(data => {
-            alert("The employee: " + employeeId + "is already updated with the Phone: "+ field);
+            alert("The employee: " + employeeId + "is already updated with the Phone: "+ phone);
         })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting employee.');
     });
 
 }
