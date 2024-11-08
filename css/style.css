@@ -18,6 +18,12 @@ body {
 	width: 1rem;
 }
 
+.img-update {
+	height: 3rem;
+	width: 3rem;
+	margin: 0.5rem;
+}
+
 .button-send{
 	height: 4rem;
 	width: 10rem;

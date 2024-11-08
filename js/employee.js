@@ -95,7 +95,7 @@ function searchEmployeeById() {
 		let  phone = '';
                 if (data.length > 0) {
 			data.forEach(employee => {
-				let data = `Select an option for Employee ID: ${employeeId}`;
+				let data = `Update a field  of Employee ID: ${employeeId}`;
 				document.getElementById("idEmployee").innerHTML = data;
 				document.getElementById('searchForm').style.display='none';
 				document.getElementById('newForm').style.display='block';
@@ -196,12 +196,50 @@ function deleteEmployeeById() {
 function updateField() {
 
     // Get values of each input field
+    const employeeId = document.getElementById('employeeIdInput').value;
     const name = document.getElementById('inputName').value;
     const department = document.getElementById('inputDepartment').value;
     const position = document.getElementById('inputPosition').value;
     const email = document.getElementById('inputEmail').value;
     const phone = document.getElementById('inputPhone').value;
+    // alert(employeeId);
+  const fields = { name, email, phone, department, position };
+  const updatedFields = [];
+  for (const [key, value] of Object.entries(fields)) {
+	  if (employeeId && value) {
+	          updatedFields.push(`${key}: ${value}`);
+	  }
+  }
+	if (updatedFields.length > 0) {
+		for(let i=0; i< updatedFields.length; i++){
+			const[key, value] = updatedFields[i].split(": ");
+			const variable = key.trim();
+			const result = value.trim();
+			switch(true){
+				case(variable == "name"):
+					updateName(result, employeeId);
+					break;
+				case (variable == "email"):
+					updateEmail(result, employeeId);
+					break;
+				case(variable == "phone"):
+					updatePhone(result, employeeId);
+					break;
+				case(variable == "department"):
+					updateDepartment(result, employeeId);
+					break;
+				case(variable == "position"):
+					updatePosition(result, employeeId);
+					break;
+				default:
+					console.log("Nothing to do");
 
+			}
+			console.log(variable, result);
+		}
+	} else {
+		alert("You need to update a field or more");
+	}
 }
 
 
@@ -285,7 +323,7 @@ function updateEmail(email,employeeId){
 }
 
 //Update phone
-function updatePhone(field,employeeId){
+function updatePhone(phone,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/phone?phone=${phone}`, {
         method: 'PUT'
     })
