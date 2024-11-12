@@ -25,7 +25,19 @@ function findLocationById() {
         document.getElementById("table_location").innerHTML = '';
 
         fetch(`http://localhost:8762/location/api/v1/location/${locationId}/record`)
-            .then(response => response.json())
+            .then(response => {
+		    if(response.status === 404){
+		    let tableData = `
+		    <tr>
+        		<td colspan="6" style="color: red">There's no LocationID: ${locationId}</td>
+                    </tr>
+		   `;
+			    document.getElementById("table_location").innerHTML = tableData;
+			    throw  new Error("Location ID not found");
+		    } else {
+			    return response.json();
+		    }
+	    })
             .then(data => {
                 let tableData = ''; 
 
@@ -81,7 +93,6 @@ function deleteLocationById() {
     const locationId = document.getElementById('locationIdDelete').value;
     
     if (locationId) {
-        // Clear the table data
         document.getElementById("table_location").innerHTML = '';
 
         fetch(`http://localhost:8762/location/api/v1/location/${locationId}/delete`, {
@@ -91,9 +102,9 @@ function deleteLocationById() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();  
+            return response.status;  
         })
-        .then(data => {
+        .then(status => {
             let tableData = `
             <tr>
                 <td colspan="6" style='color: red'>Location ID:  ${locationId} has been deleted.</td>
@@ -102,13 +113,14 @@ function deleteLocationById() {
             document.getElementById("table_location").innerHTML = tableData;
         })
         .catch(error => {
-            let tableData = `
-            <tr>
-                <td colspan="6" style='color: red'>There's not Location ID ${locationId} </td>
-            </tr>`;
-            
-            document.getElementById("table_location").innerHTML = tableData;
-        });
+		console.error('Error:', error)
+		let tableData = `
+		<tr>
+        	    <td colspan="6" style='color: red'>There's not Location ID: ${locationId} </td>
+
+		</tr>`;
+		document.getElementById("table_location").innerHTML = tableData;
+	});
     } else {
         alert('Please enter a valid Employee ID');
     }
