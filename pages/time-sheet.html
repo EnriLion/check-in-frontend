@@ -2,10 +2,10 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<title>iSmart IT Employees</title>
-	<link rel="stylesheet" href="css/style.css" media="all">
+	<title>iSmart IT Timesheet</title>
+	<link rel="stylesheet" href="../css/style.css" media="all">
 	<!-- favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="img/icon.png">
+	<link rel="shortcut icon" type="image/x-icon" href="../img/icon.png">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -25,7 +25,7 @@
 				      Employee
 			      </a>
 			      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownEmployeeFunctions">
-				      <li><a class="dropdown-item text-white" href="index.html">List of Employees</a></li>
+				      <li><a class="dropdown-item text-white" href="../index.html">List of Employees</a></li>
 				      <li><a class="dropdown-item text-white" href="register.html">Register Employee</a></li>
 				      <li><a class="dropdown-item text-white" href="update.html">Update Employee</a></li>
 			      </ul>
@@ -38,24 +38,24 @@
 	</nav>
 <br>
 <br>
-<!-- Showing table -->
 <div class="text-center">
-	<div class="d-flex justify-content-center">
-		<h2>Location of Employees</h2>
-		<a href="#" class="btn btn-secondary rounded-4" onclick="findLocations()"><img src="img/loading.png" class="img-edit"></a>
-	</div>
+<div class="d-flex justify-content-center">
+	<h2 class="text-center">Time-Sheet Employees</h2>
+	<a href="#" class="btn btn-secondary rounded-4" onclick="findAllRecords()"><img src="../img/loading.png" class="img-edit"></a>
+
+</div>
 <div class="container">
-	<table class="table table-bordered">
+	<table class="table">
 		<thead class="table-dark">
 			<tr>
-				<th scope="col">Location ID</th>
-				<th scope="col">Employee ID</th>
 				<th scope="col">Record ID</th>
-				<th scope="col">City</th>
-				<th scope="col">Country</th>
+				<th scope="col">Employee ID</th>
+				<th scope="col">CheckIn</th>
+				<th scope="col">CheckOut</th>
+				<th scope="col">Status</th>
 			</tr>
 		</thead>
-		<tbody id="table_location">
+		<tbody id="table_check">
 			<tr>
 			</tr>
 		</tbody>
@@ -64,26 +64,32 @@
 <!-- Button Section for fetching users -->
 	<div class="botton-section text-center">
 		<div class="d-flex justify-content-center">
-			<h3 class ="h3-user">Find location by ID:</h3>
-			<h3 class="h3-user">Delete location by ID:</h3>
+			<h3 class="h3-user">Find Record by Record ID:</h3>
+			<h3 class="h3-user">Delete Record by Record ID:</h3>
 		</div>
 		<!-- Fetch user by ID section -->
 		<div class="d-flex justify-content-center">
-			<input type="text" class="form-control" id="locationIdInput" placeholder="Location ID" style="max-width: 63%">
-			<a href="#" class="btn btn-secondary rounded-4" onclick="findLocationById()"><img src="img/send.png" alt="" class="img-edit"></a>
-			<input type="text" class="form-control" id="locationIdDelete" placeholder="Location ID" style="max-width: 63%">
-			<a href="#" class="btn btn-secondary rounded-4" onclick="deleteLocationById()"><img src="img/send.png" alt="" class="img-edit"></a>
+			<input type="text" class="form-control" id="recordIdInput" placeholder="Record ID" style="max-width: 63%">
+			<a href="#" class="btn btn-secondary rounded-4" onclick="findRecordId()"><img src="../img/send.png" alt="" class="img-edit"></a>
+			<input type="text" class="form-control" id="deleteIdInput" placeholder="Record ID" style="max-width: 63%">
+			<a href="#" class="btn btn-secondary rounded-4" onclick="deleteRecordId()"><img src="../img/send.png" alt="" class="img-edit"></a>
 		</div>
-		<br><br>
 		<div class="d-flex justify-content-center">
-		</div>
+		 </div>
+		  <br><br>
+		  <h3>Updating record status by Record ID:</h3>
 		  <br>
+		  	<div class="d-flex justify-content-center">
+				<input type="text" class="form-control" id="updateIdRecord" placeholder="Record ID" style="max-width: 63%">
+				<a href="#" class="btn btn-secondary rounded-4" onclick="updateRecordId()"><img src="../img/send.png" alt="" class="img-edit"></a>
+			</div>
 		<br>
 		<br>
 	</div>
 <script type='text/javascript' id="__bs_script__">//<![CDATA[
     document.write("<script async src='/browser-sync/browser-sync-client.2.10.1.js'><\/script>".replace("HOST", location.hostname));
 //]]></script>
-<script src="js/location.js"></script>
+<script src="../js/check.js"></script>
+
 </body>
 </html>
