@@ -17,11 +17,11 @@ function funcUpgrade(values){
 function funcStatus(values,config){
 	switch(values.status){
 		case true:
-			values.status = "./img/good.png";
+			values.status = "../img/good.png";
 			config.buttonFunc = ""
 			break;
 		case false:
-			values.status = "./img/bad.png";
+			values.status = "../img/bad.png";
 			values.checkOutTime = "";
 			break;
 	}
@@ -34,7 +34,7 @@ fetch(GET_CHECK).then((data)=>{
 }).then((objectData)=>{
 	let tableData="";
 	objectData.map((values)=>{
-		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="img/upgrade.png"</a> `};
+		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
 		funcStatus(values, config);
 		tableData+=`
 			<tr>
@@ -43,7 +43,7 @@ fetch(GET_CHECK).then((data)=>{
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a>${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
 			</tr>
 			`;
 	});
@@ -58,7 +58,7 @@ fetch(GET_CHECK).then((data)=>{
 }).then((objectData)=>{
 	let tableData="";
 	objectData.map((values)=>{
-		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="img/upgrade.png"</a> `};
+		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
 		funcStatus(values,config);
 		tableData+=`
 			<tr>
@@ -67,7 +67,7 @@ fetch(GET_CHECK).then((data)=>{
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a>${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
 			</tr>
 			`;
 	});
@@ -90,7 +90,7 @@ function findRecordId() {
                 let tableData = ''; 
                 if (data.length > 0) {
                     data.forEach(values => {
-			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="img/upgrade.png"</a> `};
+			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
 			funcStatus(values,config);
                         tableData += `
 			<tr>
@@ -99,7 +99,7 @@ function findRecordId() {
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a>${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
 			</tr>
                         `;
                     });
@@ -185,7 +185,7 @@ function updateRecordId(){
 				return {};
 			})
 			.then(values => {
-			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="img/upgrade.png"</a> `};
+			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
 			funcStatus(values,config);
 			let tableData = `
 			<tr>
@@ -194,7 +194,7 @@ function updateRecordId(){
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="img/cancel.png"</a> ${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a> ${config.buttonFunc}</td>
 			</tr>
 			`;
 				document.getElementById("table_check").innerHTML = tableData;
