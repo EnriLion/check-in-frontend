@@ -193,60 +193,76 @@ function deleteEmployeeById() {
 }
 
 // UPDATE employee by ID
-function updateField() {
 
-    // Get values of each input field
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function updateField() {
     const employeeId = document.getElementById('employeeIdInput').value;
     const name = document.getElementById('inputName').value;
     const department = document.getElementById('inputDepartment').value;
     const position = document.getElementById('inputPosition').value;
     const email = document.getElementById('inputEmail').value;
     const phone = document.getElementById('inputPhone').value;
-    // alert(employeeId);
-  const fields = { name, email, phone, department, position };
-  const updatedFields = [];
-  for (const [key, value] of Object.entries(fields)) {
-	  if (employeeId && value) {
-	          updatedFields.push(`${key}: ${value}`);
-	  }
-  }
-	if (updatedFields.length > 0) {
-		for(let i=0; i< updatedFields.length; i++){
-			const[key, value] = updatedFields[i].split(": ");
-			const variable = key.trim();
-			const result = value.trim();
-			switch(true){
-				case(variable == "name"):
-					updateName(result, employeeId);
-					break;
-				case (variable == "email"):
-					updateEmail(result, employeeId);
-					break;
-				case(variable == "phone"):
-					updatePhone(result, employeeId);
-					break;
-				case(variable == "department"):
-					updateDepartment(result, employeeId);
-					break;
-				case(variable == "position"):
-					updatePosition(result, employeeId);
-					break;
-				default:
-					console.log("Nothing to do");
 
-			}
-			console.log(variable, result);
-		}
-	} else {
-		alert("You need to update a field or more");
-	}
+    const fields = { name, email, phone, department, position };
+    const updatedFields = [];
+
+    // Collect all the fields that are not empty
+    for (const [key, value] of Object.entries(fields)) {
+        if (value) {
+            updatedFields.push({ key, value });
+        }
+    }
+
+    if (updatedFields.length > 0) {
+        try {
+            // Loop over the fields and update them one at a time with a delay
+            for (let i = 0; i < updatedFields.length; i++) {
+                const { key, value } = updatedFields[i];
+                switch (key) {
+                    case 'name':
+                        await updateName(value, employeeId);
+                        break;
+                    case 'email':
+                        await updateEmail(value, employeeId);
+                        break;
+                    case 'phone':
+                        await updatePhone(value, employeeId);
+                        break;
+                    case 'department':
+                        await updateDepartment(value, employeeId);
+                        break;
+                    case 'position':
+                        await updatePosition(value, employeeId);
+                        break;
+                    default:
+                        console.log("Unknown field");
+                }
+
+                await delay(1000);
+            }
+		window.location.href='../index.html';
+        } catch (error) {
+            console.error('Error updating employee:', error);
+            alert('Error updating employee. Please try again.');
+        }
+    } else {
+        alert("You need to update at least one field.");
+    }
 }
 
 
 //Update name
 function updateName(name,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/name?name=${name}`, {
-        method: 'PUT'
+        method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({name}),
+        cache: 'no-store'
     })
     .then(response => {
         if (!response.ok) {
@@ -265,7 +281,12 @@ function updateName(name,employeeId){
 //Update department
 function updateDepartment(department,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/department?department=${department}`, {
-        method: 'PUT'
+        method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({department}),
+        cache: 'no-store'
     })
     .then(response => {
         if (!response.ok) {
@@ -285,7 +306,12 @@ function updateDepartment(department,employeeId){
 //Update position
 function updatePosition(position,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/position?position=${position}`, {
-        method: 'PUT'
+        method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({position}),
+        cache: 'no-store'
     })
     .then(response => {
         if (!response.ok) {
@@ -305,7 +331,12 @@ function updatePosition(position,employeeId){
 //Update email
 function updateEmail(email,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/email?email=${email}`, {
-        method: 'PUT'
+        method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({email}),
+        cache: 'no-store'
     })
     .then(response => {
         if (!response.ok) {
@@ -325,7 +356,12 @@ function updateEmail(email,employeeId){
 //Update phone
 function updatePhone(phone,employeeId){
     fetch(`http://localhost:8762/employee-service/api/v1/people/${employeeId}/phone?phone=${phone}`, {
-        method: 'PUT'
+        method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({phone}),
+        cache: 'no-store'
     })
     .then(response => {
         if (!response.ok) {
@@ -361,7 +397,7 @@ function newEmployee(){
 			})
 			.then(data => {
 				alert("The new employee is already created ");
-				window.location.href='index.html';
+				window.location.href='../index.html';
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -387,7 +423,7 @@ function updateCreate(){
         .then(data => {
             alert("The employeeID: " + updateIdRecord + " has a new CheckIn");
             alert("Remember the employeeID: " + updateIdRecord + " needs to be updated");
-	    window.location.href = 'time-sheet.html';
+	    window.location.href = '../pages/time-sheet.html';
 
         })
     .catch(error => {

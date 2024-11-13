@@ -9,7 +9,7 @@ fetch(GET_LOCATION).then((data)=> {
 		tableData+=`
 			<tr>
 				<td>${values.location}</td>
-				<td>${values.employee.id} - ${values.employee.name}</td>
+				<td>${values.employeeId.id} - ${values.employeeId.name}</td>
 				<td>${values.check.checkInId}</td>
 				<td>${values.city}</td>
 				<td>${values.country}</td>
@@ -46,7 +46,7 @@ function findLocationById() {
                         tableData += `
                         <tr>
 			        <td>${values.location}</td>
-		        	<td>${values.employee.id} - ${values.employee.name}</td>
+				<td>${values.employeeId.id} - ${values.employeeId.name}</td>
 				<td>${values.check.checkInId}</td>
 				<td>${values.city}</td>
 				<td>${values.country}</td>
@@ -78,7 +78,7 @@ function findLocations(){
 		tableData+=`
                         <tr>
 			        <td>${values.location}</td>
-		        	<td>${values.employee.id} - ${values.employee.name}</td>
+				<td>${values.employeeId.id} - ${values.employeeId.name}</td>
 				<td>${values.check.checkInId}</td>
 				<td>${values.city}</td>
 				<td>${values.country}</td>
