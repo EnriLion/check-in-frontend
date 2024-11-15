@@ -5,37 +5,90 @@ function funcRemove(values){
 	let employeeId = values;
 	deleteEmployeeById(employeeId);
 }
+let currentPage = 1;
+let totalPages = 1;
+const itemsPerPage = 5;
+let employeeData = [];
 
 //GET all data from employees
-fetch(GET_EMPLOYEE).then((data)=>{
-	return data.json();
-}).then((objectData)=>{
-	const selectShow = document.getElementById('employeeIdInput');
-	const tableShow = document.getElementById('table_employee');
-	let tableData="";
+const tableShow = document.getElementById('table_employee');
+const selectShow = document.getElementById('employeeIdInput');
+
+// Fetch and initialize data
+if (tableShow){
+	fetch(GET_EMPLOYEE).then((data) => {
+		return data.json();
+	}).then((objectData) => {
+		employeeData = objectData;
+		totalPages = Math.ceil(employeeData.length / itemsPerPage);
+		renderTable(tableShow);
+		// renderPagination();
+	});
+} else if (selectShow){
 	let selectData="";
-	objectData.map((values)=>{
-		if(tableShow){
-		tableData+=`
-			<tr>
-				<td>${values.id}</td>
-				<td>${values.name}</td>
-				<td>${values.department}</td>
-				<td>${values.position}</td>
-				<td>${values.email}</td>
-				<td>${values.phone}</td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})"><img class="img-icon" src="img/cancel.png"</a></td>
-			</tr>
-			`;
-			document.getElementById("table_employee").
-				innerHTML=tableData;
-		} else if (selectShow) {
+	fetch(GET_EMPLOYEE).then((data) => {
+		return data.json();
+	}).then((objectData) => {
+		objectData.map((values)=>{
 			selectData+=`
 				<option value="${values.id}">Employee ID: ${values.id} | Name: ${values.name}</option> `
 			document.getElementById("employeeIdInput").innerHTML=selectData;
-		}
+		});
+
 	});
-})
+}
+
+// Function to render table based on the current page
+function renderTable() {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = employeeData.slice(startIndex, endIndex);
+  // const tableShow = document.getElementById('table_employee');
+  let tableData = "";
+
+  paginatedData.forEach((values) => {
+    tableData += `
+      <tr>
+        <td>${values.id}</td>
+        <td>${values.name}</td>
+        <td>${values.department}</td>
+        <td>${values.position}</td>
+        <td>${values.email}</td>
+        <td>${values.phone}</td>
+        <td style="background: none; border: none; padding: 0;">
+          <a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})">
+            <img class="img-icon" src="img/cancel.png" alt="Remove"/>
+          </a>
+        </td>
+      </tr>
+    `;
+  });
+  tableShow.innerHTML = tableData;
+}
+
+// function renderPagination() {
+//   const paginationNumbers = document.getElementById('pagination-numbers');
+//   paginationNumbers.innerHTML = ` Page ${currentPage}  - ${totalPages} `;
+// }
+
+// Previous
+function goPrevious() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderTable();
+    // renderPagination();
+  }
+}
+
+// Next
+function goNext() {
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderTable();
+    // renderPagination();
+  }
+}
+
 
 //GET all data from select
 
