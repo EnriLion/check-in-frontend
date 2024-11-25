@@ -49,7 +49,7 @@
 <br>
 <br>
 	<div class="d-flex justify-content-center">
-			<h2 id="registerId" class="letter text-center">Register User Location</h2>
+			<h2 class="letter text-center">Update Location</h2>
 			<img src="../img/notes.png" lt="" class="img-update">
 	</div>
 	<div class="botton-section text-center">
@@ -70,7 +70,7 @@
 								<option value="India">India</option>
 								<option value="China">China</option>
 							</select>
-							<label  for="floatingInput">Country</label>
+							<label id="idCountry" for="floatingInput"></label>
 						</div>
 					</div>
 					<div class="col-12 col-md-6 mb-4">
@@ -88,7 +88,7 @@
 								<option value="Bangalore">Bangalore</option>
 								<option value="Beijing">Beijing</option>
 							</select>
-							<label for="floatingInput">City</label>
+							<label id="idCity" for="floatingInput"></label>
 						</div>
 					</div>
 				</div>
@@ -110,13 +110,13 @@
 	</div>
 	<div id="searchForm">
 	<br><br>
-		<h3 class ="">Select Record ID:</h3>
+		<h3 class ="">Select Employee ID:</h3>
 	<br><br>
-					<select id="recordInput"class="form-select" >
+					<select id="locationInput"class="form-select" >
 						<option></option>
 					</select>
 	<br><br>
-		<a href="#" class="btn btn-secondary rounded-4" onclick="registerLocation()"><img src="../img/send.png" alt="" class="img-edit"></a>
+		<a href="#" class="btn btn-secondary rounded-4" onclick="searchLocationById()"><img src="../img/send.png" alt="" class="img-edit"></a>
 	<br><br>
 	</div>
     </div>

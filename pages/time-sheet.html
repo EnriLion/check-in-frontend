@@ -31,7 +31,16 @@
 			      </ul>
 		      </div>
 	        <a class="nav-link text-white" href="time-sheet.html">TimeSheet</a>
-	        <a class="nav-link text-white" href="location.html">Location</a>
+		      <div class="dropdown">
+			      <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownEmployeeFunctions" data-bs-toggle="dropdown" aria-expanded="false">
+				     Location 
+			      </a>
+			      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownEmployeeFunctions">
+				      <li><a class="dropdown-item text-white" href="location.html">Location List</a></li>
+				      <li><a class="dropdown-item text-white" href="location-register.html">Register Location</a></li>
+				      <li><a class="dropdown-item text-white" href="location-update.html">Update Location</a></li>
+			      </ul>
+		      </div>
 	      </div>
 	    </div>
 	  </div>
@@ -60,7 +69,16 @@
 			</tr>
 		</tbody>
 	</table>
+	<span id="pagination-numbers" class="d-flex justify-content-start"></span>
 </div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      <a class="page-link bg-dark text-white " href="#" onclick="goPrevious()" >Previous</a>
+    <!-- <li class="page-item"><a class="page-link bg-dark text-white" href="#">2</a></li> -->
+      <a class="page-link bg-dark text-white" href="#" onclick="goNext()">Next</a>
+    </li>
+  </ul>
+</nav>
 <!-- Button Section for fetching users -->
 	<div class="botton-section text-center">
 		<div class="d-flex justify-content-center">
