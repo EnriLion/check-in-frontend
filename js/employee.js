@@ -1,41 +1,47 @@
 const GET_EMPLOYEE= 'http://localhost:8762/employee-service/api/v1/people/records'
 
+let currentPage = 1;
+
+let totalPages = 1;
+
+const itemsPerPage = 5;
+
+let employeeData = [];
+
+const tableShow = document.getElementById('table_employee');
+const selectShow = document.getElementById('employeeIdInput');
+
 //functionButtonCancel
 function funcRemove(values){
 	let employeeId = values;
 	deleteEmployeeById(employeeId);
 }
-let currentPage = 1;
-let totalPages = 1;
-const itemsPerPage = 5;
-let employeeData = [];
 
 //GET all data from employees
-const tableShow = document.getElementById('table_employee');
-const selectShow = document.getElementById('employeeIdInput');
 
 // Fetch and initialize data
-if (tableShow){
-	fetch(GET_EMPLOYEE).then((data) => {
-		return data.json();
-	}).then((objectData) => {
-		employeeData = objectData;
-		totalPages = Math.ceil(employeeData.length / itemsPerPage);
-		renderTable(tableShow);
-		// renderPagination();
-	});
-} else if (selectShow){
-	let selectData="";
-	fetch(GET_EMPLOYEE).then((data) => {
-		return data.json();
-	}).then((objectData) => {
-		objectData.map((values)=>{
+function displayData(){
+	if (tableShow){
+		fetch(GET_EMPLOYEE).then((data) => {
+			return data.json();
+		}).then((objectData) => {
+			employeeData = objectData;
+			totalPages = Math.ceil(employeeData.length / itemsPerPage);
+			renderTable(tableShow);
+			renderPagination();
+		});
+	} else if (selectShow){
+		let selectData="";
+		fetch(GET_EMPLOYEE).then((data) => {
+			return data.json();
+		}).then((objectData) => {
+			objectData.map((values)=>{
 			selectData+=`
 				<option value="${values.id}">Employee ID: ${values.id} | Name: ${values.name}</option> `
-			document.getElementById("employeeIdInput").innerHTML=selectData;
+				document.getElementById("employeeIdInput").innerHTML=selectData;
+			});
 		});
-
-	});
+	}
 }
 
 // Function to render table based on the current page
@@ -55,8 +61,8 @@ function renderTable() {
         <td>${values.position}</td>
         <td>${values.email}</td>
         <td>${values.phone}</td>
-        <td style="background: none; border: none; padding: 0;">
-          <a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})">
+        <td style="background: none; border: none; padding: 10;">
+          <a class="btn btn-outline-danger rounded-4 icon " onclick="funcRemove(${values.id})">
             <img class="img-icon" src="img/cancel.png" alt="Remove"/>
           </a>
         </td>
@@ -66,17 +72,17 @@ function renderTable() {
   tableShow.innerHTML = tableData;
 }
 
-// function renderPagination() {
-//   const paginationNumbers = document.getElementById('pagination-numbers');
-//   paginationNumbers.innerHTML = ` Page ${currentPage}  - ${totalPages} `;
-// }
+function renderPagination() {
+	const paginationNumbers = document.getElementById('pagination-numbers');
+	paginationNumbers.innerHTML = ` Page ${currentPage}  - ${totalPages} `;
+}
 
 // Previous
 function goPrevious() {
   if (currentPage > 1) {
     currentPage--;
     renderTable();
-    // renderPagination();
+    renderPagination();
   }
 }
 
@@ -85,7 +91,7 @@ function goNext() {
   if (currentPage < totalPages) {
     currentPage++;
     renderTable();
-    // renderPagination();
+    renderPagination();
   }
 }
 
@@ -113,7 +119,7 @@ function findEmployeeById() {
                             <td>${employee.position}</td>
                             <td>${employee.email}</td>
                             <td>${employee.phone}</td>
-			    <td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${employee.id})"><img class="img-icon" src="img/cancel.png"</a></td>
+			    <td style="background: none; border: none; padding: 5;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${employee.id})"><img class="img-icon" src="img/cancel.png"</a></td>
                         </tr>
                         `;
                     });
@@ -176,25 +182,7 @@ function searchEmployeeById() {
 
 //GET all employees
 function findEmployees(){
-	fetch(GET_EMPLOYEE).then((data)=>{
-		return data.json();
-	}).then((objectData)=>{
-		let tableData="";
-		objectData.map((values)=>{
-		tableData+=`
-		<tr>
-		   <td>${values.id}</td>
-		   <td>${values.name}</td>
-		   <td>${values.department}</td>
-		   <td>${values.position}</td>
-		   <td>${values.email}</td>
-	           <td>${values.phone}</td>
-		   <td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.id})"><img class="img-icon" src="img/cancel.png"</a></td>
-		</tr>
-		 `;
-	});
-	document.getElementById("table_employee").innerHTML=tableData;
-	})
+	location.reload();
 }
 
 
@@ -271,7 +259,7 @@ async function updateField() {
 
     if (updatedFields.length > 0) {
         try {
-            // Loop over the fields and update them one at a time with a delay
+            // Loop the fields and update with the delay
             for (let i = 0; i < updatedFields.length; i++) {
                 const { key, value } = updatedFields[i];
                 switch (key) {
@@ -476,7 +464,7 @@ function updateCreate(){
         .then(data => {
             alert("The employeeID: " + updateIdRecord + " has a new CheckIn");
             alert("Remember the employeeID: " + updateIdRecord + " needs to be updated");
-	    window.location.href = '../pages/time-sheet.html';
+	    window.location.href = 'pages/time-sheet.html';
 
         })
     .catch(error => {
@@ -486,3 +474,4 @@ function updateCreate(){
 
 }
 
+displayData();
