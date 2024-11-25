@@ -1,6 +1,13 @@
 
 const GET_CHECK = 'http://localhost:8762/checks/api/v1/check/records'
 
+let currentPage = 1;
+let totalPages = 1;
+const itemsPerPage = 5;
+let checkData = [];
+
+const tableShow = document.getElementById('table_check');
+
 //functionButtonCancel
 function funcRemove(values){
 	let recordId = values;
@@ -14,11 +21,11 @@ function funcUpgrade(values){
 }
 
 //functionStatus
-function funcStatus(values,config){
+function funcStatus(values){
 	switch(values.status){
 		case true:
 			values.status = "../img/good.png";
-			config.buttonFunc = ""
+			values.buttonFunc = ""
 			break;
 		case false:
 			values.status = "../img/bad.png";
@@ -32,49 +39,72 @@ function funcStatus(values,config){
 fetch(GET_CHECK).then((data)=>{
 	return data.json();
 }).then((objectData)=>{
-	let tableData="";
-	objectData.map((values)=>{
-		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
-		funcStatus(values, config);
-		tableData+=`
+	checkData = objectData;
+	totalPages = Math.ceil(checkData.length / itemsPerPage);
+	renderTable(tableShow);
+	renderPagination();
+})
+
+function renderTable(){
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const paginatedData = checkData.slice(startIndex, endIndex);
+	let tableData = "";
+	paginatedData.forEach((values) => {
+	// let config = { buttonFunc: `
+	// 		`};
+	   values.buttonFunc = `
+			<td style="background: none; border: none; padding:0; text-align: left;"><a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img  style=""class="img-icon" src="../img/upgrade.png"</a> </td>
+			`;
+	    funcStatus(values);
+	    if(values.status == "../img/good.png"){
+			values.buttonFunc = `
+			`;
+	    }
+	     console.log(values);
+	    tableData += `
 			<tr>
 				<td>${values.checkInId}</td>
 				<td>${values.employee}</td>
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon " onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a></td>
+				${values.buttonFunc}
 			</tr>
 			`;
+		tableShow.innerHTML = tableData;
 	});
-	document.getElementById("table_check").
-		innerHTML=tableData
-})
+
+}
+
+function renderPagination() {
+  const paginationNumbers = document.getElementById('pagination-numbers');
+  paginationNumbers.innerHTML = ` Page ${currentPage}  - ${totalPages} `;
+}
+
+//Previous
+function goPrevious(){
+  if (currentPage > 1) {
+    currentPage--;
+    renderTable();
+    renderPagination();
+  }
+}
+
+//Next
+function goNext(){
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderTable();
+    renderPagination();
+  }
+}
+
 
 //FindAllRecords
 function findAllRecords(){
-fetch(GET_CHECK).then((data)=>{
-	return data.json();
-}).then((objectData)=>{
-	let tableData="";
-	objectData.map((values)=>{
-		let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
-		funcStatus(values,config);
-		tableData+=`
-			<tr>
-				<td>${values.checkInId}</td>
-				<td>${values.employee}</td>
-				<td>${values.checkInTime}</td>
-				<td>${values.checkOutTime}</td>
-				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
-			</tr>
-			`;
-	});
-	document.getElementById("table_check").
-		innerHTML=tableData
-})
-
+	location.reload();
 }
 
 
@@ -90,8 +120,11 @@ function findRecordId() {
                 let tableData = ''; 
                 if (data.length > 0) {
                     data.forEach(values => {
-			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
-			funcStatus(values,config);
+		    // let config = { buttonFunc: `
+			// <td style="background: none; border: none; padding:0; text-align: left;"><a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img  style=""class="img-icon" src="../img/upgrade.png"</a> </td>
+			// `};
+			values.buttonFunc = '';
+			funcStatus(values);
                         tableData += `
 			<tr>
 				<td>${values.checkInId}</td>
@@ -99,7 +132,8 @@ function findRecordId() {
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a>${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a></td>
+				${values.buttonFunc}
 			</tr>
                         `;
                     });
@@ -185,8 +219,9 @@ function updateRecordId(){
 				return {};
 			})
 			.then(values => {
-			let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
-			funcStatus(values,config);
+			// let config = { buttonFunc: `<a class="btn btn-outline-success rounded-4 icon" onclick="funcUpgrade(${values.checkInId})"><img class="img-icon" src="../img/upgrade.png"</a> `};
+			values.buttonFunc = '';
+			funcStatus(values);
 			let tableData = `
 			<tr>
 				<td>${values.checkInId}</td>
@@ -194,7 +229,7 @@ function updateRecordId(){
 				<td>${values.checkInTime}</td>
 				<td>${values.checkOutTime}</td>
 				<td><img src="${values.status}" height="42" width="42"/></td>
-				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a> ${config.buttonFunc}</td>
+				<td style="background: none; border: none; padding: 0;"><a class="btn btn-outline-danger rounded-4 icon me-2" onclick="funcRemove(${values.checkInId})"><img class="img-icon" src="../img/cancel.png"</a> ${values.buttonFunc}</td>
 			</tr>
 			`;
 				document.getElementById("table_check").innerHTML = tableData;
