@@ -45,6 +45,8 @@ function funcRemove(values){
 
 let selectData= "";
 
+let addedCheckInIds = [];
+
 ////GET all data from location
 function displayData(){
 	if(tableShow){
@@ -68,27 +70,39 @@ function displayData(){
 			});
 		});
 	} else  if(recordShow){
-		selectData= "";
-		Promise.all([request, requestTwo, requestThree])
-			.then(([objectOne,objectTwo,objectThree]) => {
-				let getObj="";
-				objectOne.map((object)=>{
-				objectTwo.map((values)=> {
-				objectThree.map((employee)=>{
-				if(values.status == true && values.checkInId != object.check.checkInId && values.employee == employee.id){
-				selectData+=`
-						<option value="${values.checkInId}">Record ID: ${values.checkInId} | Employee ID: ${values.employee} | Name: ${employee.name}`;
-				}
-				});
-				});
-			});
-			document.getElementById("recordInput").innerHTML=selectData;
-			})
-			.catch(error => {
-				console.error(error);
-			});
+		loadDropdown();
 	}
 }
+
+async function loadDropdown() {
+    selectData = "";
+    Promise.all([request, requestTwo, requestThree])
+        .then(([locations, records, employees]) => {
+            const trueStatusRecords = records.filter(record => record.status === true);
+
+            const filteredRecords = trueStatusRecords.filter(record => {
+                return !locations.some(location => location.check.checkInId === record.checkInId);
+            });
+
+            if (filteredRecords.length === 0) {
+                selectData = '<option>No records found</option>';
+            } else {
+                filteredRecords.forEach(record => {
+                    const employee = employees.find(emp => emp.id === record.employee);
+                    if (employee) {
+                        selectData += `
+                            <option value="${record.checkInId}">Employee ID: ${employee.id} | Name: ${employee.name} | CheckIn ID: ${record.checkInId}</option>`;
+                    }
+                });
+            }
+
+            document.getElementById('recordInput').innerHTML = selectData;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 
 function renderPagination() {
 	const paginationNumbers = document.getElementById('pagination-numbers');
@@ -113,7 +127,6 @@ function goNext() {
   }
 }
 
-//Funciton to render table based on the current page
 function renderTable(){
 	const startIndex = (currentPage - 1) * itemsPerPage;
 	const endIndex = startIndex + itemsPerPage;
